@@ -1,0 +1,46 @@
+version: "3.2"
+services:
+  nodejs:
+    build: 
+      context: .
+    image: victorsahel1/sumafinal3
+    networks:
+      - frontend
+      - backend
+    environment:
+      - MYSQL_HOST='127.0.0.1'
+      - MYSQL_USER='root
+      - MYSQL_PASS=''
+      - MYSQL_DB=num
+    volumes:
+      - ./www/:/var/www/html/
+    ports:
+      - "30001:8005"
+    container_name: sumafinal-node3
+  mysql:
+    image: mysql:5.7
+    networks:
+      - backend
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=moepass 
+      - MYSQL_DATABASE=num
+    container_name: sumafinal-mysql3
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    depends_on:
+      - mysql
+    networks:
+      - backend
+    ports:
+      - "30002:80"
+    environment:
+      - PMA_HOST=moe-mysql-app
+      - PMA_PORT= 3306
+    volumes:
+      - /sessions
+    container_name: sumafinal-pma3
+networks:
+  frontend:
+  backend:
